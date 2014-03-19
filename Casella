@@ -1,0 +1,370 @@
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.Math;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+
+public abstract class Casella extends JButton {
+
+		public int riga;
+		public int colonna;
+		public Dama dama;
+		
+	
+		
+		public final static int DIMENSIONE = 45; 
+			
+
+		protected Casella(String nomeFileDellImmagine,final Dama dama) {
+			super(new ImageIcon("/home/giacomo/workspace/Dama/" + nomeFileDellImmagine + ".gif" ));
+			this.dama=dama;
+			this.addActionListener(new ActionListener() {
+				
+				
+
+				@Override
+				public void actionPerformed(ActionEvent event) {												
+
+					/*				
+					if(((Pedina)event.getSource()).getColore() == true ) 
+						System.out.println("bianca");
+					
+					else if (((Pedina)event.getSource()).getColore() == false )
+						System.out.println("nera");
+					
+					else if (((CasellaVuota)event.getSource()) instanceof CasellaVuota)
+						System.out.println("VUOTA");
+					 */
+					
+			//TURNO DEL BIANCO					
+				
+				if(!(dama.ultimaPedinaCliccata instanceof Damone) && dama.get_turno() == 0 ) {
+						
+					if (dama.ultimaPedinaCliccata != null && dama.ultimaPedinaCliccata.puoSpostarsiSu(Casella.this) && 
+							 dama.ultimaPedinaCliccata.getColore() == true ) {
+					
+						//se mi muovo verso il basso
+						if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()-2) {
+							//se sto mangiando a sinistra  
+							if (dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()+2) {				
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()+1,dama.ultimaPedinaCliccata.getColonna()-1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche1 " + dama.getN_bianche());
+								//dama.set_turno(dama.get_turno() + 1);
+						
+							}
+							//se sto mangiando veso destra
+							else if (dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()-2){
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()+1,dama.ultimaPedinaCliccata.getColonna()+1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche2 " + dama.getN_bianche());
+								//dama.set_turno(dama.get_turno() + 1);
+					    						    	
+							}
+						}
+						
+						
+					//se mi muovo verso l'alto
+					   if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()+2) {
+						  				
+						  //se sto mangiando a sinistra
+						  if (dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()+2){
+					
+							  new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()-1,dama.ultimaPedinaCliccata.getColonna()-1);
+							  dama.setN_nere(dama.getN_nere()-1);
+							  System.out.println("Nere1 " + dama.getN_nere());
+							  //dama.set_turno(dama.get_turno() + 1);
+						  }
+						  
+						  //se sto mangiando a destra
+						  else if (dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()-2) {
+							  
+							new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()-1,dama.ultimaPedinaCliccata.getColonna()+1);
+							dama.setN_nere(dama.getN_nere()-1);
+							System.out.println("Nere2 " + dama.getN_nere());
+							//dama.set_turno(dama.get_turno() + 1);
+						  }
+					  }
+					
+					  
+					   new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata);
+					   
+					   				
+										
+					   if (dama.ultimaPedinaCliccata.getColore()==true && Casella.this.getRiga()== 0) {             	   		
+             	   			new Damone(true, dama).spostaIn(Casella.this);
+             	   		System.out.println("Sposto la bianca e diventa un damone");
+             	   			dama.set_turno(dama.get_turno() + 1);
+					   } 					 					   
+					
+					   else    {           		
+						   	dama.ultimaPedinaCliccata.spostaIn(Casella.this);
+					   		dama.set_turno(dama.get_turno() + 1);
+					   		System.out.println("Sposto la bianca");
+					   }
+					   		dama.ultimaPedinaCliccata = null;
+					 		
+				    
+					} 
+					
+					
+					else if (!(Casella.this instanceof CasellaVuota)) {
+					  		dama.ultimaPedinaCliccata = (Pedina)Casella.this;
+						
+					}
+				 								
+					else 
+							dama.ultimaPedinaCliccata = null;
+							
+				} 
+			
+			
+			//TURNO DEL NERO
+			
+				else if(!(dama.ultimaPedinaCliccata1 instanceof Damone) && dama.get_turno() == 1 ) {
+				
+						
+					
+					if (dama.ultimaPedinaCliccata1 != null && dama.ultimaPedinaCliccata1.puoSpostarsiSu(Casella.this) && 
+							dama.ultimaPedinaCliccata1.getColore() == false ) {
+				
+						//se mi muovo verso il basso
+						if (dama.ultimaPedinaCliccata1.getRiga()==Casella.this.getRiga()-2) {
+							//se sto mangiando a sinistra  
+							if (dama.ultimaPedinaCliccata1.getColonna()==Casella.this.getColonna()+2) {				
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata1.getRiga()+1,dama.ultimaPedinaCliccata1.getColonna()-1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche1 " + dama.getN_bianche());
+								//dama.set_turno(dama.get_turno() - 1);
+														
+							}
+							//se sto mangiando veso destra
+							else if (dama.ultimaPedinaCliccata1.getColonna()==Casella.this.getColonna()-2){
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata1.getRiga()+1,dama.ultimaPedinaCliccata1.getColonna()+1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche2 " + dama.getN_bianche());
+								//dama.set_turno(dama.get_turno() - 1);
+					    						    	
+							}
+						}
+						
+						//se mi muovo verso l'alto
+						   if (dama.ultimaPedinaCliccata1.getRiga()==Casella.this.getRiga()+2) {
+							  				
+							  //se sto mangiando a sinistra
+							  if (dama.ultimaPedinaCliccata1.getColonna()==Casella.this.getColonna()+2){
+						
+								  new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata1.getRiga()-1,dama.ultimaPedinaCliccata1.getColonna()-1);
+								  dama.setN_nere(dama.getN_nere()-1);
+								  System.out.println("Nere1 " + dama.getN_nere());
+								  //dama.set_turno(dama.get_turno() - 1);
+							  }
+							  
+							  //se sto mangiando a destra
+							  else if (dama.ultimaPedinaCliccata1.getColonna()==Casella.this.getColonna()-2) {
+								  
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata1.getRiga()-1,dama.ultimaPedinaCliccata1.getColonna()+1);
+								dama.setN_nere(dama.getN_nere()-1);
+								System.out.println("Nere2 " + dama.getN_nere());
+								//dama.set_turno(dama.get_turno() - 1);
+							  }
+						  }
+				  
+						new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata1);
+						 
+
+								
+						if (dama.ultimaPedinaCliccata1.getColore()==false && Casella.this.getRiga()==7)   {                              
+							new Damone(false,dama).spostaIn(Casella.this);
+							System.out.println("Sposto la nera e diventa un damone");
+							dama.set_turno(dama.get_turno() - 1);
+						}
+				
+						else {            		
+							dama.ultimaPedinaCliccata1.spostaIn(Casella.this);
+							System.out.println("Sposto la nera");
+						   dama.set_turno(dama.get_turno() - 1);
+						}   
+							dama.ultimaPedinaCliccata1 = null;
+			    
+					} 
+				
+				
+					else if (!(Casella.this instanceof CasellaVuota)) {
+						dama.ultimaPedinaCliccata1 = (Pedina)Casella.this;
+						//dama.set_turno(dama.get_turno() - 1);
+					}
+							 								
+					else
+						dama.ultimaPedinaCliccata1 = null;
+				} 
+			
+		
+				
+				
+				////TURNO DEL DAMONE BIANCO
+				
+				else if (dama.ultimaPedinaCliccata instanceof Damone) {
+					
+				
+					if (dama.ultimaPedinaCliccata.puoSpostarsiSu(Casella.this)) {
+				
+						//se mi muovo verso il basso a sinistra con un damone nero
+						if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()-2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()+2 &&
+									dama.ultimaPedinaCliccata.getColore() == false) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()+1,dama.ultimaPedinaCliccata.getColonna()-1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche1 " + dama.getN_bianche());
+						
+							}
+						
+						//se mi muovo verso il basso a destra con un damone nero
+						else if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()-2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()-2 &&
+									dama.ultimaPedinaCliccata.getColore() == false) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()+1,dama.ultimaPedinaCliccata.getColonna()+1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche2 " + dama.getN_bianche());
+						
+							}
+						
+						//se mi muovo verso l'alto a sinistra con un damone nero
+						else if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()+2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()+2 &&
+									dama.ultimaPedinaCliccata.getColore() == false) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()-1,dama.ultimaPedinaCliccata.getColonna()-1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche2 " + dama.getN_bianche());
+						
+							}
+						//se mi muovo verso l'alto a destra con un damone nero
+						else if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()+2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()-2 &&
+									dama.ultimaPedinaCliccata.getColore() == false) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()-1,dama.ultimaPedinaCliccata.getColonna()+1);
+								dama.setN_bianche(dama.getN_bianche()-1);
+								System.out.println("Bianche2 " + dama.getN_bianche());
+						
+							}
+						
+						//se mi muovo verso il basso a sinistra con un damone bianco
+						if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()-2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()+2 &&
+									dama.ultimaPedinaCliccata.getColore() == true) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()+1,dama.ultimaPedinaCliccata.getColonna()-1);
+								dama.setN_nere(dama.getN_nere()-1);
+								System.out.println("Nere1 " + dama.getN_nere());
+						
+							}
+						
+						//se mi muovo verso il basso a destra con un damone bianco
+						else if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()-2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()-2 &&
+									dama.ultimaPedinaCliccata.getColore() == true) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()+1,dama.ultimaPedinaCliccata.getColonna()+1);
+								dama.setN_nere(dama.getN_nere()-1);
+								System.out.println("Nere2 " + dama.getN_nere());
+						
+							}
+						
+						//se mi muovo verso l'alto a sinistra con un damone bianco
+						else if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()+2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()+2 &&
+									dama.ultimaPedinaCliccata.getColore() == true) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()-1,dama.ultimaPedinaCliccata.getColonna()-1);
+								dama.setN_nere(dama.getN_nere()-1);
+								System.out.println("Nere3 " + dama.getN_nere());						
+							}
+						
+						//se mi muovo verso l'alto a destra con un damone bianco
+						else if (dama.ultimaPedinaCliccata.getRiga()==Casella.this.getRiga()+2 && 
+								dama.ultimaPedinaCliccata.getColonna()==Casella.this.getColonna()-2 &&
+									dama.ultimaPedinaCliccata.getColore() == true) {										
+						
+								new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata.getRiga()-1,dama.ultimaPedinaCliccata.getColonna()+1);
+								dama.setN_nere(dama.getN_nere()-1);
+								System.out.println("Nere4 " + dama.getN_nere());						
+						
+						}
+					
+						
+						new CasellaVuota(dama).spostaIn(dama.ultimaPedinaCliccata);
+						dama.ultimaPedinaCliccata.spostaIn(Casella.this);
+					    dama.ultimaPedinaCliccata = null;
+					    
+					   
+					    
+				  }
+					
+					else if (!(Casella.this instanceof CasellaVuota))
+						  dama.ultimaPedinaCliccata = (Pedina)Casella.this;
+					 								
+					else
+						  dama.ultimaPedinaCliccata = null;
+						
+						
+				
+				}
+				
+				if(dama.getN_nere() == 0)
+					System.out.println("Vince l'utente");
+				else if(dama.getN_bianche() == 0)
+					System.out.println("Vince la cpu");
+					
+				
+				
+										
+				
+			}  }   );
+			
+		}
+		
+	
+		protected abstract boolean puoSpostarsiSu(Casella casella);
+
+		public final void spostaIn(Casella casella) {
+			spostaIn(casella.riga, casella.colonna);
+		}
+		
+		public final void spostaIn(int riga, int colonna) {
+				this.riga = riga;
+				this.colonna = colonna;
+
+				setBounds(colonna * Casella.DIMENSIONE, riga * Casella.DIMENSIONE, Casella.DIMENSIONE, Casella.DIMENSIONE);
+				setBackground((riga+colonna) % 2 == 0 ? Color.WHITE : Color.GRAY);
+
+				dama.getContentPane().remove(dama.caselle[riga][colonna]);
+				//al suo posto ci siamo noi!
+				dama.caselle[riga][colonna] = this;
+
+				dama.getContentPane().add(this);
+                repaint();
+		}
+		
+		public final int getRiga() {
+			return riga;
+		}
+
+		public final int getColonna() {
+			return colonna;
+		}
+		
+		public boolean BooleanV() {
+			return true;//Math.random() < 0.5;			
+		}
+		
+		}
+		
+
