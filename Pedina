@@ -1,0 +1,89 @@
+public class Pedina extends Casella {
+
+	private final boolean colore;
+	public final static boolean BIANCO = true;
+	public final static boolean NERO = false;
+	
+	//costruttore di Pedina
+	protected Pedina(boolean colore,Dama dama) {
+		super("pedina" +
+					(colore == BIANCO ? "_bianco" : "_nero"),dama);
+		this.colore = colore;
+	}
+	
+	//costruttore per Damone
+	protected Pedina(String string,boolean colore,Dama dama) {
+		super("damone" +
+					(colore == BIANCO ? "_bianco" : "_nero"),dama);
+		this.colore = colore;
+	}
+	
+	public boolean getColore() {
+		return colore;
+	}
+
+	@Override
+	protected boolean puoSpostarsiSu(Casella casella) {
+		//se ci muoviamo a destra o a sinistra di 1
+		if ((casella.getColonna()==this.getColonna()+1)||(casella.getColonna()==this.getColonna()-1)) {
+			//con la pedina bianca verso l'alto
+			if (this.getColore()==BIANCO && casella.getRiga()==this.getRiga()-1) {
+				//e andiamo su una casella vuota
+				if (casella instanceof CasellaVuota)
+					return true;
+			}
+			//con una pedina nera verso il basso
+			else if (this.getColore()==NERO && casella.getRiga()==this.getRiga()+1) {
+				//e andiamo su una casella vuota
+				if (casella instanceof CasellaVuota)
+					return true;
+			}
+			
+		} else if (casella.getColonna()==this.getColonna()+2) {
+			if (this.getColore()==BIANCO && casella.getRiga()==this.getRiga()-2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()-1][this.getColonna()+1] instanceof Damone)
+						return false;
+						else if (dama.caselle[this.getRiga()-1][this.getColonna()+1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()-1][this.getColonna()+1];
+						if (mangiare.getColore()==NERO)
+							return true;
+					}
+				}
+			} else if (this.getColore()==NERO && casella.getRiga()==this.getRiga()+2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()+1][this.getColonna()+1] instanceof Damone)
+						return false;
+					else if (dama.caselle[this.getRiga()+1][this.getColonna()+1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()+1][this.getColonna()+1];
+						if (mangiare.getColore()==BIANCO)
+							return true;
+					}
+				}
+			}
+		} else if (casella.getColonna()==this.getColonna()-2) {
+			if (this.getColore()==BIANCO && casella.getRiga()==this.getRiga()-2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()-1][this.getColonna()-1] instanceof Damone)
+						return false;
+					else if (dama.caselle[this.getRiga()-1][this.getColonna()-1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()-1][this.getColonna()-1];
+						if (mangiare.getColore()==NERO)
+							return true;
+					}
+				}
+			} else if (this.getColore()==NERO && casella.getRiga()==this.getRiga()+2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()+1][this.getColonna()-1] instanceof Damone)
+						return false;
+					else if (dama.caselle[this.getRiga()+1][this.getColonna()-1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()+1][this.getColonna()-1];
+						if (mangiare.getColore()==BIANCO)
+							return true;
+					}
+				}
+			}
+		}		
+		return false;	
+	}
+}
