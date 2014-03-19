@@ -1,0 +1,13 @@
+
+public class CasellaVuota extends Casella {
+
+	public CasellaVuota(Dama dama) {
+		super("casella",dama);
+	}
+
+	@Override
+	protected boolean puoSpostarsiSu(Casella casella) {
+		return false;
+	}
+
+}
