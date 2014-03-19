@@ -1,0 +1,66 @@
+public class Damone extends Pedina{
+	
+	private final boolean colore;
+	
+	
+	protected Damone(boolean colore,Dama dama) {
+		super("damone" , (colore == Pedina.BIANCO ? true : false), dama);
+		
+		this.colore = colore;
+	}
+
+	public final boolean getColore() {
+		return colore;
+	}
+	
+	@Override
+	protected boolean puoSpostarsiSu(Casella casella) {
+		//se ci muoviamo a destra o a sinistra di 1
+	
+			if ((casella.getColonna()==this.getColonna()+1)||(casella.getColonna()==this.getColonna()-1)) {
+		 		if ((casella.getRiga()==this.getRiga()+1)||(casella.getRiga()==this.getRiga()-1))
+					if (casella instanceof CasellaVuota)
+						return true;
+					
+		
+		} else if (casella.getColonna()==this.getColonna()+2) {
+			if (casella.getRiga()==this.getRiga()-2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()-1][this.getColonna()+1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()-1][this.getColonna()+1];
+						if (mangiare.getColore()!=this.getColore())
+							return true;
+					}
+				}
+			} else if (casella.getRiga()==this.getRiga()+2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()+1][this.getColonna()+1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()+1][this.getColonna()+1];
+						if (mangiare.getColore()!=this.getColore())
+							return true;
+					}
+				}
+			}
+		} else if (casella.getColonna()==this.getColonna()-2) {
+			if (casella.getRiga()==this.getRiga()-2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()-1][this.getColonna()-1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()-1][this.getColonna()-1];
+						if (mangiare.getColore()!=this.getColore())
+							return true;
+					}
+				}
+			} else if (casella.getRiga()==this.getRiga()+2) {
+				if (casella instanceof CasellaVuota) {
+					if (dama.caselle[this.getRiga()+1][this.getColonna()-1] instanceof Pedina) {
+						Pedina mangiare = (Pedina) dama.caselle[this.getRiga()+1][this.getColonna()-1];
+						if (mangiare.getColore()!=this.getColore())
+							return true;
+					}
+				}
+			}
+		}		
+		return false;
+	}
+
+}
