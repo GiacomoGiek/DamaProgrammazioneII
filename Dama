@@ -1,0 +1,128 @@
+import java.awt.Color;
+
+
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+
+
+import javax.swing.JFrame;
+
+public class Dama extends JFrame {
+	
+	public Pedina ultimaPedinaCliccata = new Pedina(true,this);
+	public Pedina ultimaPedinaCliccata1 = new Pedina(false,this);
+	
+	//public Damone ultimaPedinaCliccata1;
+	
+        private int n_nere= 12;
+        private int n_bianche= 12;
+        private int turno = 0;
+        
+        		
+
+		
+        
+		 final JLabel nn=new JLabel();
+		 final JLabel nb=new JLabel();
+		 
+	public final Casella[][] caselle = {
+			{ new Pedina(Pedina.NERO,this), new CasellaVuota(this),new Pedina(Pedina.NERO,this), new CasellaVuota(this),new Pedina(Pedina.NERO,this), 
+				new CasellaVuota(this),new Pedina(Pedina.NERO,this), new CasellaVuota(this) } ,
+			{ new CasellaVuota(this), new Pedina(Pedina.NERO,this), new CasellaVuota(this),new Pedina(Pedina.NERO,this), new CasellaVuota(this),new Pedina(Pedina.NERO,this), 
+				new CasellaVuota(this),new Pedina(Pedina.NERO,this) } ,
+			{ new Pedina(Pedina.NERO,this), new CasellaVuota(this),new Pedina(Pedina.NERO,this), new CasellaVuota(this),new Pedina(Pedina.NERO,this), 
+				new CasellaVuota(this),new Pedina(Pedina.NERO,this), new CasellaVuota(this) } , 
+			{ new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this), 
+				new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this) } ,
+			{ new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this), 
+				new CasellaVuota(this), new CasellaVuota(this), new CasellaVuota(this) } ,
+			{ new CasellaVuota(this), new Pedina(Pedina.BIANCO,this), new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), 
+				new CasellaVuota(this),new Pedina(Pedina.BIANCO,this) } ,
+			{ new Pedina(Pedina.BIANCO,this), new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), 
+				new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), new CasellaVuota(this) } ,
+			{ new CasellaVuota(this), new Pedina(Pedina.BIANCO,this), new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), new CasellaVuota(this),new Pedina(Pedina.BIANCO,this), 
+				new CasellaVuota(this),new Pedina(Pedina.BIANCO,this) }
+			} ;
+	public Dama() { 
+		super("Dama");
+		esciSeChiusa();
+		nonUsareLayoutManager();
+		fissaLeDimensioni();
+		disegnaLeCaselle();
+		preparaIlGioco();
+	 }
+	
+	private void esciSeChiusa() {
+	 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 }
+
+	 private void nonUsareLayoutManager() {
+		getContentPane().setLayout(null);
+	 }
+
+	 private void fissaLeDimensioni() {
+		int xSize = Casella.DIMENSIONE * caselle[0].length;
+		int ySize = Casella.DIMENSIONE * (caselle.length)+65;
+		
+		setSize(xSize,ySize);
+		setResizable(false);
+	 }
+
+	 private void disegnaLeCaselle() {
+		int riga = 0;
+		for(Casella[] rigaDiPedine : caselle) {
+			int colonna = 0;
+			for(Casella casella : rigaDiPedine)
+				casella.spostaIn(riga,colonna++);
+			riga++;
+		}
+	 }
+	 
+	 private void preparaIlGioco() {
+		 nn.setText("12");
+		 nn.setBounds(10, 368, 30, 30);
+		 nb.setText("12");
+		 nb.setBounds(330, 368, 30, 30);
+		 getContentPane().add(nn);
+		 getContentPane().add(nb);
+	 }
+	 
+	 public int get_turno() {
+		 	return turno;
+	 }
+	 
+	 public void set_turno(int turno) {
+		 this.turno = turno;
+	 }
+	 
+	 public int getN_bianche() {
+			return n_bianche;
+		}
+
+		public void setN_bianche(int n_bianche) {
+			this.n_bianche = n_bianche;
+		}
+
+		public int getN_nere() {
+			return n_nere;
+		}
+
+		public void setN_nere(int n_nere) {
+			this.n_nere = n_nere;
+		}
+
+	
+	public static void main(String[] args) {
+		new Dama().setVisible(true);
+
+	}
+
+}
